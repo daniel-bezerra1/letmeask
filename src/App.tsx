@@ -2,6 +2,7 @@ import './App.css';
 
 // usando o import dessa forma estou especificando qual function eu quero. 
 import { ButtonOne } from './components/Button'
+import './services/firebase'
 
 // Componentes são pedaços isolados que quando juntos formam a aplicação. 
 // A function App é um componente.
