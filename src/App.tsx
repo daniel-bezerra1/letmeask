@@ -1,18 +1,19 @@
 import './App.css';
-
-// usando o import dessa forma estou especificando qual function eu quero. 
+import { BrowserRouter, Route } from 'react-router-dom'
 import { Home } from './pages/Home';
+import { NovaSala } from './pages/NovaSala';
 import './services/firebase'
 import './styles/global.scss'
-
-// Componentes são pedaços isolados que quando juntos formam a aplicação. 
-// A function App é um componente.
-// Componente é uma função que devolve um HTML 
-// Não se escreve componentes em classes
+import { AuthContextProvider } from './contexts/AuthContexts'
 
 function App() {
   return (
-    <Home />
+    <BrowserRouter>
+      <AuthContextProvider>
+        <Route path="/" exact={true} component={Home} />
+        <Route path="/salas/novasala" component={NovaSala} />
+      </AuthContextProvider>
+    </BrowserRouter>
   );
 }
 

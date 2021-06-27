@@ -1,25 +1,16 @@
-
 import { useContext } from 'react'
+import { Link } from 'react-router-dom'
 import { AuthContext } from '../contexts/AuthContexts'
-import { useHistory } from 'react-router-dom'
 import imagemHome from '../assets/images/illustration.svg'
 import logoHome from '../assets/images/logo.svg'
-import googleImg from '../assets/images/google-icon.svg'
 import { Button } from '../components/Button'
 import '../styles/auth.scss'
 
 
-export function Home() {
-  const history = useHistory();
-  const { user, signInWithGoogle } = useContext(AuthContext);
+export function NovaSala() {
 
-  async function criarSala() {
-    if (!user) {
-      await signInWithGoogle()
-    }
-    history.push('salas/novasala')
-  }
-
+  const { user } = useContext(AuthContext);
+  
   return (
     <div id="page-auth">
       <aside>
@@ -30,17 +21,16 @@ export function Home() {
       <main>
         <div className="main-content">
           <img src={logoHome} alt="logo" />
-          <button onClick={criarSala} className="btn-google">
-            <img src={googleImg} alt="logoDoGoogle" />
-            Crie sua sala com o Google
-          </button>
-          <div className="separador">ou entre em uma sala</div>
+          <h4>Seja bem-vindo <br />{user?.user}</h4>
+          <h2>Crie uma nova sala</h2>
           <form>
             <input type="text" placeholder="Digite o código da sala" />
-            <Button type="submit">Entrar na Sala</Button>
+            <Button type="submit">Criar sala</Button>
           </form>
+          <p>Quer entrar em uma sala existente? <Link to={"/"}>Clique aqui</Link></p>
         </div>
       </main>
     </div>
   )
 }
+
