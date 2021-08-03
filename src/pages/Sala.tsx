@@ -7,6 +7,27 @@ import { useAuth } from '../hooks/useAuth'
 import { database } from '../services/firebase'
 import '../styles/sala.scss'
 
+type PerguntasFirebase = Record <string,  {
+    author: {
+        name: string,
+        avatar: string
+    },
+    content: string,
+    isHighlighted: boolean,
+    isAnswered: boolean,
+}>
+
+type Perguntas = {
+    id: string, 
+    author: {
+        name: string,
+        avatar: string
+    },
+    content: string,
+    isHighlighted: boolean,
+    isAnswered: boolean,
+}
+
 type ParametrosSala = {
     id: string;
 }
@@ -14,19 +35,40 @@ type ParametrosSala = {
 export function Salas() {
     const { user } = useAuth();
     const parametros = useParams<ParametrosSala>();
-    const [novaPergunta, setPergunta] = useState('')
+    const [novaPergunta, setNovaPergunta] = useState('')
+    const [pergunta, setPergunta] = useState <Perguntas[]>([])
+    const [titulo, setTitulo] = useState('')
     const idSala = parametros.id;
 
     // use effect é uma função (hook) que é disparado sempre que alguma coisa mudar.
     // se o parametro passado 
     useEffect( () => {
         const referenciaSala = database.ref(`salas/${idSala}`);
+
+        referenciaSala.on('value', salas =>{
+            const dbSala = salas.val();
+            const perguntasFirebase = dbSala.perguntas as PerguntasFirebase;
+            console.log(perguntasFirebase)
+            const parsePergunta = Object.entries(perguntasFirebase ?? {}).map(([key, value]) => {
+                return {
+                    id: key,
+                    content: value.content,
+                    author: value.author,
+                    isHighlighted: value.isHighlighted,
+                    isAnswered: value.isAnswered,
+                }
+            })
+            
+            setTitulo(dbSala.title);
+            setPergunta(parsePergunta)
+
+        })
         
-    }, []);
+    }, [idSala]);
 
     //sempre que estou pegando valor do formulário preciso colocar no parametro da função o event: FormEvent do React
     async function criaPergunta(event: FormEvent) {
-        event.preventDefault();
+        event.preventDefault(); //não recarrega a pagina
         if (novaPergunta.trim() === '') {
             
             return
@@ -47,7 +89,7 @@ export function Salas() {
         };
 
         await database.ref(`salas/${idSala}/perguntas/`).push(pergunta);
-        setPergunta('');
+        setNovaPergunta('');
     }
 
     return (
@@ -60,12 +102,12 @@ export function Salas() {
             </header>
             <main>
                 <div className="titulo-sala">
-                    <h1>Sala React</h1>
-                    <span>4 perguntas</span>
+                    <h1>Sala: {titulo}</h1>
+                    <span>{pergunta.length} pergunta(s)</span>
                 </div>
                 <form onSubmit={criaPergunta}>
                     <textarea placeholder="La Pergunta?" 
-                              onChange = {event => setPergunta(event.target.value)}
+                              onChange = {event => setNovaPergunta(event.target.value)}
                               value = {novaPergunta}></textarea>
                     <div className= "rodape-formulario">
                         {
@@ -83,6 +125,7 @@ export function Salas() {
                         <Button type="submit"disabled={!user}>Enviar pergunta</Button>
                     </div>
                 </form>
+                {JSON.stringify(pergunta)}
             </main>
         </div>
     )
