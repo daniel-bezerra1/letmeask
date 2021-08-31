@@ -40,11 +40,23 @@
       flex-direction: column;
       width: 100%;
       max-width: 320px;
-      align-items: stretch;
+      align-items: stretch;  //Elemento estica para caber no container
       text-align: center;
 
       > img {
-        align-self: center;
+        align-self: center; 
+      }
+
+      h2{
+        font-size: 24px;
+        margin: 64px 0 24px;
+        font-family: 'Poppins', sans-serif;
+      }
+      h4{
+        font-size: 10px;
+        margin: 24px 0 4px;
+        font-family: 'Poppins', sans-serif;
+        color: #737380;
       }
 
       .btn-google {
@@ -61,8 +73,13 @@
         align-items: center;
         cursor: pointer;
 
+        transition: filter 0.2s;
+
         img {
           padding: 5px;
+        }
+        &:hover{
+          filter: brightness(0.9);
         }
       }
 
@@ -107,6 +124,19 @@
           width: 100%;
         }
       }
+
+      p{  
+        font-size: 14px;
+        color: #737380;
+        margin-top: 16px;
+
+        a{
+          color: #e559f9;
+        }
+      }
+      
+      
+
     }
   }
 }

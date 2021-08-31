@@ -1,25 +1,11 @@
-import { useState } from "react";
+import { ButtonHTMLAttributes } from "react";
+import '../styles/button.scss';
 
-type ButtonProps = {
-  text?: string
-}
-//O ponto de interrogação acima "text?" indica que essa propriedade é opcional
+type ButtonProps = ButtonHTMLAttributes <HTMLButtonElement>;
 
-export function ButtonOne(props: ButtonProps) {
-
-  const [counter, setCounter] = useState(0);
-
-  //criando um novo valor na variável counter com base no valor anterior.
-  //com useState não se altera uma variável mas cria-se um novo valor com base no anterior.
-  function Incrementar() {
-    setCounter(counter + 1);
-    console.log(counter)
-  }
-
+export function Button(props: ButtonProps) {
   return (
-    <button onClick={Incrementar}>
-      {counter}
-    </button>
+    <button className="button" {...props} />
   )
 }
 
