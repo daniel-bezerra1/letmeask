@@ -35,6 +35,10 @@ export function Home() {
       alert('Sala não encontrada');
       return;
     }
+    if (buscaSala.val().endedAt){
+      alert("Sala se encontra encerrada!")
+      return;
+    }
     history.push(`salas/${refSala}`)
   }
 

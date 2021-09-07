@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { database } from "../services/firebase"
+import { useAuth } from "./useAuth"
 
 type PerguntasFirebase = Record <string,  {
     author: {
@@ -9,20 +10,26 @@ type PerguntasFirebase = Record <string,  {
     content: string,
     isHighlighted: boolean,
     isAnswered: boolean,
+    likes: Record <string, {
+        authorId: string;
+    }>
 }>
 
 type Perguntas = {
-    id: string, 
+    id: string; 
     author: {
-        name: string,
+        name: string;
         avatar: string
     },
-    content: string,
-    isHighlighted: boolean,
-    isAnswered: boolean,
+    content: string;
+    isHighlighted: boolean;
+    isAnswered: boolean;
+    likeCount: number;
+    likeId: string | undefined
 }
 
 export function UseRoom(idSala: String){
+    const { user } = useAuth();
     const [pergunta, setPergunta] = useState <Perguntas[]>([])
     const [titulo, setTitulo] = useState('')
 
@@ -34,7 +41,6 @@ export function UseRoom(idSala: String){
         referenciaSala.on('value', salas =>{
             const dbSala = salas.val();
             const perguntasFirebase = dbSala.perguntas as PerguntasFirebase;
-            console.log(perguntasFirebase)
             const parsePergunta = Object.entries(perguntasFirebase ?? {}).map(([key, value]) => {
                 return {
                     id: key,
@@ -42,6 +48,8 @@ export function UseRoom(idSala: String){
                     author: value.author,
                     isHighlighted: value.isHighlighted,
                     isAnswered: value.isAnswered,
+                    likeCount: Object.values(value.likes ?? {}).length,
+                    likeId: Object.entries(value.likes ?? {}).find(([key, value]) => value.authorId === user?.id)?.[0]
                 }
             })
             
@@ -50,7 +58,7 @@ export function UseRoom(idSala: String){
 
         })
         
-    }, [idSala]);
+    }, [idSala, user?.id]);
 
     return{
         pergunta, titulo
