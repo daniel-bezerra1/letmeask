@@ -6,6 +6,7 @@ import { Salas } from './pages/Sala';
 import './services/firebase'
 import './styles/global.scss'
 import { AuthContextProvider } from './contexts/AuthContexts'
+import { AdminRoom } from './pages/AdminRoom';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/" exact={true} component={Home} />
           <Route path="/salas/novasala" component={NovaSala} />
           <Route path="/salas/:id" component={Salas} />
+          <Route path="/admin/salas/:id" component={AdminRoom} />
         </Switch>
       </AuthContextProvider>
     </BrowserRouter>
