@@ -7,6 +7,8 @@ import { UseRoom } from '../hooks/useRoom'
 import { database } from '../services/firebase'
 import '../styles/sala.scss'
 import deleteImg from  '../assets/images/delete.svg'
+import checkImg from  '../assets/images/check.svg'
+import answerImg from  '../assets/images/answer.svg'
 
 type ParametrosSala = {
     id: string;
@@ -60,6 +62,18 @@ export function AdminRoom() {
                             content={pergunta.content}
                             author={pergunta.author}
                         >
+                            <button
+                                type='button'
+                                //onClick={() => handleDeleteQuestion(pergunta.id)}
+                            >
+                                <img src={answerImg} alt="Responder pergunta" />
+                            </button>
+                            <button
+                                type='button'
+                                //onClick={() => handleDeleteQuestion(pergunta.id)}
+                            >
+                                <img src={checkImg} alt="Marcar pergunta" />
+                            </button>
                             <button
                                 type='button'
                                 onClick={() => handleDeleteQuestion(pergunta.id)}
