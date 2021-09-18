@@ -34,32 +34,50 @@
             }
         }
 
-        button {
-            border:0;
-            background: transparent;
-            cursor: pointer;
-         
-            &.like-button{
-                display: flex;
-                align-items: flex-end;
-                color: #737380;
-                gap: 8px;
-                transition: filter 0.2s;
-                
-                &.liked{
-                    color: #0779BA;
-
-                    svg path{
-                        stroke: #0779BA
+        div{
+            
+            button {
+                border:0;
+                background: transparent;
+                cursor: pointer;
+    
+                &.notAnswered-button {
+                    align-items: flex-end;
+                    color: #737380;
+                    gap: 8px;
+                    transition: filter 0.2s;
+    
+                    &.asAnswered {
+                        color: #0779BA;
+    
+                        svg path {
+                            stroke: #0779BA;
+                        }
                     }
-
                 }
-            }
-
-            &:hover{
-                filter: brightness(0.5);
-            }
-        }    
+             
+                &.like-button{
+                    display: flex;
+                    align-items: flex-end;
+                    color: #737380;
+                    gap: 8px;
+                    transition: filter 0.2s;
+                    
+                    &.liked{
+                        color: #0779BA;
+    
+                        svg path{
+                            stroke: #0779BA
+                        }
+    
+                    }   
+                }
+    
+                &:hover{
+                    filter: brightness(0.5);
+                }
+            }    
+        }
     }
 
 }

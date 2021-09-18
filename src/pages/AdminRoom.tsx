@@ -5,11 +5,9 @@ import { CodSala } from '../components/CodSala'
 import { Question } from '../components/Question'
 import { UseRoom } from '../hooks/useRoom'
 import { database } from '../services/firebase'
-import '../styles/sala.scss'
+import '../styles/adminroom.scss'
 import deleteImg from  '../assets/images/delete.svg'
 import checkImg from  '../assets/images/check.svg'
-import answerImg from  '../assets/images/answer.svg'
-
 type ParametrosSala = {
     id: string;
 }
@@ -34,6 +32,18 @@ export function AdminRoom() {
             await database.ref(`salas/${idSala}/perguntas/${perguntaId}`).remove()
         }
         
+    }
+
+    async function handleCheckQuestionAsAnswered(perguntaId: string) {
+        await database.ref(`salas/${idSala}/perguntas/${perguntaId}`).update({
+            isAnswered: true
+        })
+    }
+
+    async function handleHighlightQuestion(perguntaId: string) {
+        await database.ref(`salas/${idSala}/perguntas/${perguntaId}`).update({
+            isAnswered: true
+        })        
     }
 
     return (
@@ -63,14 +73,18 @@ export function AdminRoom() {
                             author={pergunta.author}
                         >
                             <button
+                                className={`notAnswered-button ${pergunta.isAnswered ? 'asAnswered' : ''}`}
                                 type='button'
-                                //onClick={() => handleDeleteQuestion(pergunta.id)}
+                                onClick={() => handleCheckQuestionAsAnswered(pergunta.id)}
                             >
-                                <img src={answerImg} alt="Responder pergunta" />
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fillRule="evenodd" clipRule="evenodd" d="M12 17.9999H18C19.657 17.9999 21 16.6569 21 14.9999V6.99988C21 5.34288 19.657 3.99988 18 3.99988H6C4.343 3.99988 3 5.34288 3 6.99988V14.9999C3 16.6569 4.343 17.9999 6 17.9999H7.5V20.9999L12 17.9999Z" stroke="#737380" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
+
                             </button>
                             <button
                                 type='button'
-                                //onClick={() => handleDeleteQuestion(pergunta.id)}
+                                onClick={() => handleHighlightQuestion(pergunta.id)}
                             >
                                 <img src={checkImg} alt="Marcar pergunta" />
                             </button>
